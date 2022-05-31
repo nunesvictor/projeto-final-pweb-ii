@@ -33,13 +33,24 @@
 
         <div class="mb-3">
             <label for="valorInputNumber">Valor</label>
-            <input type="number" min="0.01" step="0.01" id="valorInputNumber" th:field="*{valor}" class="form-control"/>
+            <input type="number" id="valorInputNumber" min="0.01" step="0.01" class="form-control"
+                   th:field="*{valor}" th:classappend="${#fields.hasErrors('valor') ? 'is-invalid' : ''}"/>
+            <div class="invalid-feedback"
+                 th:errors="*{valor}"
+                 th:if="${#fields.hasErrors('valor')}"></div>
         </div>
 
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="flexCheckDefault" th:field="*{promocao}">
-            <label class="form-check-label" for="flexCheckDefault">
+            <input class="form-check-input" type="checkbox" id="promocaoCheck" th:field="*{promocao}">
+            <label class="form-check-label" for="promocaoCheck">
                 Mostrar preço como promoção
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="activeCheck" th:field="*{active}">
+            <label class="form-check-label" for="activeCheck">
+                Ativo
             </label>
         </div>
 

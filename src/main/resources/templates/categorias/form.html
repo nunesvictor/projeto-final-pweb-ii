@@ -25,7 +25,18 @@
         <input type="hidden" id="id" name="id" th:field="*{id}"/>
         <div class="mb-3">
             <label for="descricaoInputText">Descrição</label>
-            <input type="text" id="descricaoInputText" th:field="*{descricao}" class="form-control"/>
+            <input type="text" id="descricaoInputText" class="form-control"
+                   th:field="*{descricao}" th:classappend="${#fields.hasErrors('descricao') ? 'is-invalid' : ''}"/>
+            <div class="invalid-feedback"
+                 th:errors="*{descricao}"
+                 th:if="${#fields.hasErrors('descricao')}"></div>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="activeCheck" th:field="*{active}">
+            <label class="form-check-label" for="activeCheck">
+                Ativo
+            </label>
         </div>
 
         <div class="d-flex flex-row-reverse">
