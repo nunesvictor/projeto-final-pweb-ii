@@ -1,0 +1,27 @@
+<ul class="nav nav-pills justify-content-end"
+    th:fragment="nav-pills" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/produtos/list}"
+           th:classappend="${#strings.startsWith(#request.servletPath, '/produtos') ? 'active' : ''}">
+            Produtos
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/marcas/list}"
+           th:classappend="${#strings.startsWith(#request.servletPath, '/marcas') ? 'active' : ''}">
+            Marcas
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/categorias/list}"
+           th:classappend="${#strings.startsWith(#request.servletPath, '/categorias') ? 'active' : ''}">
+            Categorias
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/precos/list}"
+           th:classappend="${#strings.startsWith(#request.servletPath, '/precos') ? 'active' : ''}">
+            Preços
+        </a>
+    </li>
+</ul>
