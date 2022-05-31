@@ -16,7 +16,7 @@ public class Preco {
     @ManyToOne
     private Produto produto;
 
-    @DecimalMin(value = "0.01")
+    @DecimalMin(value = "0.01", message = "O valor mínimo é {value}")
     private Double valor;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
