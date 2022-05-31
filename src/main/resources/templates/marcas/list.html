@@ -26,9 +26,8 @@
         <thead>
         <tr>
             <th class="col-md-1">#</th>
-            <th class="col-md-3">Nome</th>
-            <th class="col-md-1">Ativo</th>
-            <th class="col-md-3">Criado em</th>
+            <th class="col-md-5">Nome</th>
+            <th class="col-md-2">Ativo</th>
             <th class="col-md-3">Alterado em</th>
             <th class="col-md-1"></th>
         </tr>
@@ -38,7 +37,6 @@
             <td th:text="${m.id}"></td>
             <td th:text="${m.nome}"></td>
             <td th:text="${m.active ? 'SIM' : 'NÃO'}"></td>
-            <td th:text="${m.createdAt}"></td>
             <td th:text="${m.updatedAt}"></td>
             <td class="text-end">
                 <div sec:authorize="hasRole('ADMIN')">

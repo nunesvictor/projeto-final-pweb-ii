@@ -26,10 +26,9 @@
     <thead>
     <tr>
       <th class="col-md-1">#</th>
-      <th class="col-md-2">Produto</th>
-      <th class="col-md-1">Valor</th>
+      <th class="col-md-4">Produto</th>
+      <th class="col-md-2">Valor</th>
       <th class="col-md-1">Ativo</th>
-      <th class="col-md-3">Criado em</th>
       <th class="col-md-3">Alterado em</th>
       <th class="col-md-1"></th>
     </tr>
@@ -40,7 +39,6 @@
       <td th:text="|${p.produto.descricao} ${p.produto.marca.nome}|"></td>
       <td th:text="${p.valor}"></td>
       <td th:text="${p.active ? 'SIM' : 'NÃO'}"></td>
-      <td th:text="${p.createdAt}"></td>
       <td th:text="${p.updatedAt}"></td>
       <td class="text-end">
         <div sec:authorize="hasRole('ADMIN')">

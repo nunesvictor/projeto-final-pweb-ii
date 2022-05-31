@@ -25,22 +25,25 @@
     <table class="table table-condensed table-striped table-hover">
         <thead>
         <tr>
-            <th>#</th>
-            <th>Produto</th>
-            <th>Marca</th>
-            <th>Categorias</th>
+            <th class="col-md-1">#</th>
+            <th class="col-md-3">Produto</th>
+            <th class="col-md-3">Categorias</th>
+            <th class="col-md-1">Ativo</th>
+            <th class="col-md-3">Alterado em</th>
+            <th class="col-md-1"></th>
             <th></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="p : ${produtos}">
             <td th:text="${p.id}"></td>
-            <td th:text="${p.descricao}"></td>
-            <td th:text="${p.marca.nome}"></td>
+            <td th:text="|${p.descricao} ${p.marca.nome}|"></td>
             <td>
                 <span th:each="c,i : ${p.categorias}"
                       th:text="${c.descricao} + ${!i.last ? ', ' : ''}"></span>
             </td>
+            <td th:text="${p.active ? 'SIM' : 'NÃO'}"></td>
+            <td th:text="${p.updatedAt}"></td>
             <td class="text-end">
                 <div sec:authorize="hasRole('ADMIN')">
                     <a class="btn btn-outline-dark btn-sm" th:href="@{/produtos/recover/{id}(id=${p.id})}"
