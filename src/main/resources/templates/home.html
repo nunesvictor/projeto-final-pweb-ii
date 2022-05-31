@@ -38,13 +38,13 @@
                     <span class="fa fa-star"></span>
                 </div>
                 <p class="card-text" th:if="${p.precoAtual() != null}">
-                    <span th:classappend="${p.precoAtual().promocao ? 'fw-bold' : ''}"
-                          th:text="${#numbers.formatCurrency(p.precoAtual().valor)}"></span>
-
                     <small class="text-muted text-decoration-line-through me-2"
-                           th:if="${p.precoAnterior() != null}">
+                           th:if="${p.precoAnterior() != null and p.percentualDesconto() > 0}">
                         <em th:text="${#numbers.formatCurrency(p.precoAnterior().valor)}"></em>
                     </small>
+
+                    <span class="me-1" th:classappend="${p.percentualDesconto() > 0 ? 'fw-bold' : ''}"
+                          th:text="${#numbers.formatCurrency(p.precoAtual().valor)}"></span>
 
                     <span class="badge text-bg-success" th:if="${p.percentualDesconto() > 0}">
                         <em th:text="|${#numbers.formatDecimal(p.percentualDesconto(), 1, 0)}% OFF|"></em>

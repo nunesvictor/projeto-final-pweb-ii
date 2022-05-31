@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Entity
 public class Produto {
@@ -44,17 +45,23 @@ public class Produto {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    private Stream<Preco> getPrecosAtivosStream() {
+        return getPrecos().stream().filter(Preco::getActive);
+    }
+
     public Preco precoAtual() {
-        Optional<Preco> precoOptional = getPrecos().stream().findFirst();
+        Optional<Preco> precoOptional = getPrecosAtivosStream().findFirst();
         return precoOptional.orElse(null);
     }
 
     public Preco precoAnterior() {
-        if (precoAtual() == null || !precoAtual().isPromocao() || getPrecos().size() < 2) {
+        List<Preco> precosAtivos = getPrecosAtivosStream().toList();
+
+        if (precoAtual() == null || !precoAtual().isPromocao() || precosAtivos.size() < 2) {
             return null;
         }
 
-        return getPrecos().get(1);
+        return precosAtivos.get(1);
     }
 
     public Double percentualDesconto() {

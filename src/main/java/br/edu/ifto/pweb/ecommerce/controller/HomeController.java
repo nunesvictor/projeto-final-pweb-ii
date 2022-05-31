@@ -21,7 +21,7 @@ public class HomeController {
 
     @GetMapping("/")
     public ModelAndView home(ModelMap modelMap) {
-        modelMap.addAttribute("produtos", repository.findAll());
+        modelMap.addAttribute("produtos", repository.findActive());
         return new ModelAndView("/home", modelMap);
     }
 }
