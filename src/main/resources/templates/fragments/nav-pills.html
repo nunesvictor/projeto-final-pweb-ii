@@ -1,5 +1,5 @@
 <ul class="nav nav-pills justify-content-end"
-    th:fragment="nav-pills" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    th:fragment="product-nav-pills" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <li class="nav-item">
         <a class="nav-link" th:href="@{/produtos/list}"
            th:classappend="${#strings.startsWith(#request.servletPath, '/produtos') ? 'active' : ''}">
