@@ -37,15 +37,15 @@
             </thead>
             <tbody>
             <tr th:each="item,stat : ${venda.itens}">
-                <input type="hidden" class="form-control product-count" th:field="*{itens[__${stat.index}__].produto}" />
+                <input type="hidden" th:field="*{itens[__${stat.index}__].produto}" />
 
                 <td class="align-middle" th:text="${stat.count}"></td>
                 <td>
-                    <input type="number" id="quantidadeInput" class="form-control"
+                    <input type="number" id="quantidadeInput" class="form-control product-count"
                            th:field="*{itens[__${stat.index}__].quantidade}" value="1" />
                 </td>
                 <td class="align-middle" th:text="|${item.produto.descricao} ${item.produto.marca.nome}|"></td>
-                <td class="align-middle" th:text="${#numbers.formatCurrency(item.produto.precoAtual().valor)}"></td>
+                <td class="align-middle" th:text="${#numbers.formatCurrency(item.total())}"></td>
                 <td class="align-middle text-end">
                     <a class="btn btn-outline-danger btn-sm" title="Excluir"
                        th:href="@{/carrinho/delete/{id}(id=${item.produto.id})}">
@@ -59,8 +59,8 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4"></td>
-                <td id="#soma-produtos"></td>
+                <td colspan="4">Total</td>
+                <td id="#soma-produtos" th:text="${#numbers.formatCurrency(venda.total())}"></td>
             </tr>
             </tbody>
         </table>
@@ -82,7 +82,6 @@
 <script>
     $(() => {
        $('.product-count').each((_, el) => {
-           // TODO: Fix onSubmit on input change
            $(el).on('change', () => $('#cart-form').submit());
        });
     });
