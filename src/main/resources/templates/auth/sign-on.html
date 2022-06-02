@@ -66,94 +66,216 @@
 
     <link th:href="@{/css/sign-in.css}" rel="stylesheet"/>
 </head>
-<body class="text-center">
+<body>
 
 <main class="form-signon w-100 m-auto">
     <form method="post" th:action="@{/auth/sign-on}" th:object="${clientePessoaFisica}">
         <input type="hidden" th:field="*{id}"/>
 
-        <svg xmlns="http://www.w3.org/2000/svg" width="72" height="57" fill="currentColor"
-             class="bi bi-shop me-2" viewBox="0 0 16 16">
-            <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
-        </svg>
-        <h1 class="h3 mb-3 fw-normal">Primeiro acesso</h1>
-
-        <div class="form-floating mb-3">
-            <input id="nome"
-                   type="text"
-                   placeholder="Nome"
-                   th:field="*{nome}" class="form-control"
-                   th:classappend="${#fields.hasErrors('nome') ? 'is-invalid' : ''}"/>
-            <label for="nome" class="form-label">Nome</label>
-            <div class="invalid-feedback"
-                 th:errors="*{nome}"
-                 th:if="${#fields.hasErrors('nome')}"></div>
+        <div class="row text-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="72" height="57" fill="currentColor"
+                 class="bi bi-shop me-2" viewBox="0 0 16 16">
+                <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
+            </svg>
+            <h1 class="h3 mb-3 fw-normal">Primeiro acesso</h1>
         </div>
 
-        <div class="form-floating mb-3">
-            <input id="cpf"
-                   type="text"
-                   placeholder="CPF"
-                   maxlength="11"
-                   th:field="*{cpf}" class="form-control"
-                   th:classappend="${#fields.hasErrors('cpf') ? 'is-invalid' : ''}"/>
-            <label for="cpf" class="form-label">CPF</label>
-            <div class="invalid-feedback"
-                 th:errors="*{cpf}"
-                 th:if="${#fields.hasErrors('cpf')}"></div>
+        <h4>Informações pessoais</h4>
+        <hr/>
+
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-floating flex-grow-1 w-75 me-1">
+                <input id="nome"
+                       type="text"
+                       placeholder="Nome"
+                       th:field="*{nome}" class="form-control"
+                       th:classappend="${#fields.hasErrors('nome') ? 'is-invalid' : ''}"/>
+                <label for="nome" class="form-label">Nome</label>
+                <div class="invalid-feedback"
+                     th:errors="*{nome}"
+                     th:if="${#fields.hasErrors('nome')}"></div>
+            </div>
+
+            <div class="form-floating flex-grow-1 ms-1">
+                <input id="cpf"
+                       type="text"
+                       placeholder="CPF"
+                       maxlength="11"
+                       th:field="*{cpf}" class="form-control"
+                       th:classappend="${#fields.hasErrors('cpf') ? 'is-invalid' : ''}"/>
+                <label for="cpf" class="form-label">CPF</label>
+                <div class="invalid-feedback"
+                     th:errors="*{cpf}"
+                     th:if="${#fields.hasErrors('cpf')}"></div>
+            </div>
         </div>
 
-        <div class="form-floating mb-3">
-            <input id="email"
-                   type="email"
-                   placeholder="E-mail"
-                   th:field="*{email}" class="form-control"
-                   th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"/>
-            <label for="email" class="form-label">E-mail</label>
-            <div class="invalid-feedback"
-                 th:errors="*{email}"
-                 th:if="${#fields.hasErrors('email')}"></div>
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-floating flex-grow-1 w-75 mw-1">
+                <input id="email"
+                       type="email"
+                       placeholder="E-mail"
+                       th:field="*{email}" class="form-control"
+                       th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"/>
+                <label for="email" class="form-label">E-mail</label>
+                <div class="invalid-feedback"
+                     th:errors="*{email}"
+                     th:if="${#fields.hasErrors('email')}"></div>
+            </div>
+
+            <div class="form-floating flex-grow-1 ms-1">
+                <input id="telefone"
+                       type="text"
+                       placeholder="Telefone"
+                       maxlength="11"
+                       th:field="*{telefone}" class="form-control"
+                       th:classappend="${#fields.hasErrors('telefone') ? 'is-invalid' : ''}"/>
+                <label for="telefone" class="form-label">Telefone</label>
+                <div class="invalid-feedback"
+                     th:errors="*{telefone}"
+                     th:if="${#fields.hasErrors('telefone')}"></div>
+            </div>
         </div>
 
-        <div class="form-floating mb-3">
-            <input id="telefone"
-                   type="text"
-                   placeholder="Telefone"
-                   maxlength="11"
-                   th:field="*{telefone}" class="form-control"
-                   th:classappend="${#fields.hasErrors('telefone') ? 'is-invalid' : ''}"/>
-            <label for="telefone" class="form-label">Telefone</label>
-            <div class="invalid-feedback"
-                 th:errors="*{telefone}"
-                 th:if="${#fields.hasErrors('telefone')}"></div>
+        <h4>Endereço</h4>
+        <hr/>
+
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-floating flex-grow-1 me-1">
+                <input id="cep"
+                       type="text"
+                       maxlength="8"
+                       placeholder="CEP (Somente números)"
+                       th:field="*{enderecos[0].cep}" class="form-control"/>
+                <label for="cep" class="form-label">CEP (Somente números)</label>
+            </div>
+
+            <div class="form-floating flex-grow-1 ms-1">
+                <input id="apelido"
+                       type="text"
+                       placeholder="Apelido"
+                       th:field="*{enderecos[0].apelido}" class="form-control"/>
+                <label for="apelido" class="form-label">Apelido (Ex. Casa, Trabalho, Escritório)</label>
+            </div>
         </div>
 
-        <div class="form-floating mb-3">
-            <input id="username"
-                   type="text"
-                   placeholder="Nome de usuário"
-                   th:field="*{usuario.username}" class="form-control"
-                   th:classappend="${#fields.hasErrors('usuario.username') ? 'is-invalid' : ''}"/>
-            <label for="username" class="form-label">Nome de usuário</label>
-            <div class="invalid-feedback"
-                 th:errors="*{usuario.username}"
-                 th:if="${#fields.hasErrors('usuario.username')}"></div>
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-floating flex-grow-1 w-75 me-1">
+                <input id="logradouro"
+                       type="text"
+                       placeholder="Logradouro"
+                       th:field="*{enderecos[0].logradouro}" class="form-control"/>
+                <label for="logradouro" class="form-label">Logradouro</label>
+            </div>
+
+            <div class="form-floating flex-grow-1 w-25 ms-1">
+                <input id="numero"
+                       type="text"
+                       placeholder="Número"
+                       th:field="*{enderecos[0].numero}" class="form-control"/>
+                <label for="numero" class="form-label">Número</label>
+            </div>
         </div>
 
-        <div class="form-floating mb-3">
-            <input id="password"
-                   type="password"
-                   placeholder="Nome de usuário"
-                   th:field="*{usuario.password}" class="form-control"
-                   th:classappend="${#fields.hasErrors('usuario.password') ? 'is-invalid' : ''}"/>
-            <label for="password" class="form-label">Senha</label>
-            <div class="invalid-feedback"
-                 th:errors="*{usuario.password}"
-                 th:if="${#fields.hasErrors('usuario.password')}"></div>
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-floating flex-grow-1 me-1">
+                <input id="complemento"
+                       type="text"
+                       placeholder="Complemento"
+                       th:field="*{enderecos[0].complemento}" class="form-control"/>
+                <label for="complemento" class="form-label">Complemento</label>
+            </div>
+
+            <div class="form-floating flex-grow-1 ms-1">
+                <input id="bairro"
+                       type="text"
+                       placeholder="Bairro"
+                       th:field="*{enderecos[0].bairro}" class="form-control"/>
+                <label for="bairro" class="form-label">Bairro</label>
+            </div>
         </div>
+
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-floating flex-grow-1 w-75 me-1">
+                <input id="localidade"
+                       type="text"
+                       placeholder="Cidade"
+                       th:field="*{enderecos[0].localidade}" class="form-control"/>
+                <label for="localidade" class="form-label">Cidade</label>
+            </div>
+
+            <div class="form-floating flex-grow-1 w-25 ms-1">
+                <input id="uf"
+                       type="text"
+                       placeholder="Estado"
+                       th:field="*{enderecos[0].uf}" class="form-control"/>
+                <label for="uf" class="form-label">Estado</label>
+            </div>
+        </div>
+
+        <h4>Dados de acesso</h4>
+        <hr/>
+
+        <div class="d-flex justify-content-between mb-3">
+            <div class="form-floating flex-grow-1 me-1">
+                <input id="username"
+                       type="text"
+                       placeholder="Nome de usuário"
+                       th:field="*{usuario.username}" class="form-control"
+                       th:classappend="${#fields.hasErrors('usuario.username') ? 'is-invalid' : ''}"/>
+                <label for="username" class="form-label">Nome de usuário</label>
+                <div class="invalid-feedback"
+                     th:errors="*{usuario.username}"
+                     th:if="${#fields.hasErrors('usuario.username')}"></div>
+            </div>
+
+            <div class="form-floating flex-grow-1 ms-1">
+                <input id="password"
+                       type="password"
+                       placeholder="Nome de usuário"
+                       th:field="*{usuario.password}" class="form-control"
+                       th:classappend="${#fields.hasErrors('usuario.password') ? 'is-invalid' : ''}"/>
+                <label for="password" class="form-label">Senha</label>
+                <div class="invalid-feedback"
+                     th:errors="*{usuario.password}"
+                     th:if="${#fields.hasErrors('usuario.password')}"></div>
+            </div>
+        </div>
+
 
         <button class="w-100 btn btn-lg btn-primary" type="submit">Cadastrar</button>
     </form>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(() => {
+        $('#cep').on('keyup', (e) => {
+            if (e.target.value.length === 8) {
+                const cep = e.target.value;
+                fetch(`https://viacep.com.br/ws/${cep}/json/`).then((response) => {
+                    if (response.ok) {
+                        response.json().then((data) => {
+                            $('#logradouro').val(data.logradouro);
+                            $('#logradouro').prop('readonly', true);
+
+                            $('#bairro').val(data.bairro);
+                            $('#bairro').prop('readonly', true);
+
+                            $('#localidade').val(data.localidade);
+                            $('#localidade').prop('readonly', true);
+
+                            $('#uf').val(data.uf);
+                            $('#uf').prop('readonly', true);
+
+                            $('#complemento').val(data.complemento);
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>

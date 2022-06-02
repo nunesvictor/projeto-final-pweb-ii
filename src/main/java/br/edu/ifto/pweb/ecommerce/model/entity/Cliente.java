@@ -19,8 +19,10 @@ public abstract class Cliente implements Serializable {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Endereco> enderecos;
 
     @OneToMany(mappedBy = "cliente")
     private List<Venda> vendas = new ArrayList<>();
@@ -50,6 +52,14 @@ public abstract class Cliente implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
     }
 
     public List<Venda> getVendas() {
