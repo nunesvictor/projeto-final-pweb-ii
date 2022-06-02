@@ -30,34 +30,45 @@
             <img th:src="@{/produtos/files/{filename}(filename=${p.imagem})}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title" th:text="|${p.descricao} ${p.marca.nome}|"></h5>
-                <div>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                </div>
-                <p class="card-text" th:if="${p.precoAtual() != null}">
-                    <small class="text-muted text-decoration-line-through me-2"
-                           th:if="${p.precoAnterior() != null and p.percentualDesconto() > 0}">
-                        <em th:text="${#numbers.formatCurrency(p.precoAnterior().valor)}"></em>
-                    </small>
+<!--                <div class="small">-->
+<!--                    <span class="fa fa-star checked"></span>-->
+<!--                    <span class="fa fa-star checked"></span>-->
+<!--                    <span class="fa fa-star checked"></span>-->
+<!--                    <span class="fa fa-star"></span>-->
+<!--                    <span class="fa fa-star"></span>-->
+<!--                </div>-->
+                <div th:switch="${p.precoAtual()}">
+                    <div th:case="null">
+                        <p class="card-text">
+                            <h5 class="text-muted">Produto indisponível</h5>
+                        </p>
+                    </div>
+                    <div th:case="*">
+                        <p class="card-text">
+                            <small class="text-muted text-decoration-line-through me-2"
+                                   th:if="${p.precoAnterior() != null and p.percentualDesconto() > 0}">
+                                <em th:text="${#numbers.formatCurrency(p.precoAnterior().valor)}"></em>
+                            </small>
 
-                    <span class="me-1" th:classappend="${p.percentualDesconto() > 0 ? 'fw-bold' : ''}"
-                          th:text="${#numbers.formatCurrency(p.precoAtual().valor)}"></span>
+                            <span class="me-1" th:classappend="${p.percentualDesconto() > 0 ? 'fw-bold' : ''}"
+                                  th:text="${#numbers.formatCurrency(p.precoAtual().valor)}"></span>
 
-                    <span class="badge text-bg-success" th:if="${p.percentualDesconto() > 0}">
-                        <em th:text="|${#numbers.formatDecimal(p.percentualDesconto(), 1, 0)}% OFF|"></em>
-                    </span>
-                </p>
-                <div class="d-grid gap-2">
-                    <button class="btn btn-lg btn-outline-dark add-cart"
-                            th:attr="data-add-url=@{/carrinho/add/{id}(id=${p.id})}"
-                            th:attrappend="data-check-url=@{/carrinho/check/{id}(id=${p.id})}">
-                        <i class="fa-solid fa-cart-plus"></i>
-                        <span>Adicionar ao carrinho</span>
-                    </button>
+                            <span class="badge text-bg-success"
+                                  th:if="${p.percentualDesconto() > 0}">
+                                <em th:text="|${#numbers.formatDecimal(p.percentualDesconto(), 1, 0)}% OFF|"></em>
+                            </span>
+                        </p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-lg btn-outline-dark add-cart"
+                                    th:attr="data-add-url=@{/carrinho/add/{id}(id=${p.id})}"
+                                    th:attrappend="data-check-url=@{/carrinho/check/{id}(id=${p.id})}">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>Adicionar ao carrinho</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
