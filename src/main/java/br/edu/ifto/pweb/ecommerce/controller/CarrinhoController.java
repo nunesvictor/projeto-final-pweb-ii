@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Objects;
+import java.util.Optional;
 
 @Scope("request")
 @Controller
@@ -49,9 +50,8 @@ public class CarrinhoController {
 
     @GetMapping("/add/{id}")
     public ResponseEntity<?> addItem(@PathVariable("id") Long id) {
-        Produto produto = produtoRepository.getReferenceById(id);
-//        TODO: Pq?
-        Hibernate.initialize(produto);
+        Optional<Produto> optionalProduto = produtoRepository.findById(id) ;
+        Produto produto = optionalProduto.orElseThrow();
         ItemVenda item = new ItemVenda();
 
         item.setProduto(produto);
