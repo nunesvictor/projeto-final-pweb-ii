@@ -50,7 +50,7 @@ public class MarcaController implements ModelController<Marca, Long> {
     @Override
     @GetMapping("/recover/{id}")
     public ModelAndView recover(@PathVariable("id") Long id, ModelMap modelMap) {
-        modelMap.addAttribute("marca", repository.getReferenceById(id));
+        modelMap.addAttribute("marca", repository.findById(id).orElseThrow());
         return new ModelAndView("/marcas/form", modelMap);
     }
 

@@ -51,7 +51,7 @@ public class CategoriaController implements ModelController<Categoria, Long> {
     @Override
     @GetMapping("/recover/{id}")
     public ModelAndView recover(@PathVariable("id") Long id, ModelMap modelMap) {
-        modelMap.addAttribute("categoria", repository.getReferenceById(id));
+        modelMap.addAttribute("categoria", repository.findById(id).orElseThrow());
         return new ModelAndView("/categorias/form", modelMap);
     }
 

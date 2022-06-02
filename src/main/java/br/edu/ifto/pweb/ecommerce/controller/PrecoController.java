@@ -56,8 +56,8 @@ public class PrecoController implements ModelController<Preco, Long> {
     @Override
     @GetMapping("/recover/{id}")
     public ModelAndView recover(@PathVariable("id") Long id, ModelMap modelMap) {
-        modelMap.addAttribute("preco", repository.getReferenceById(id));
-        return form(repository.getReferenceById(id), modelMap);
+        modelMap.addAttribute("preco", repository.findById(id).orElseThrow());
+        return form(repository.findById(id).orElseThrow(), modelMap);
     }
 
     @Override

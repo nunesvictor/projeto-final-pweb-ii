@@ -86,8 +86,8 @@ public class ProdutoController implements ModelController<Produto, Long> {
     @Override
     @GetMapping("/recover/{id}")
     public ModelAndView recover(@PathVariable("id") Long id, ModelMap modelMap) {
-        modelMap.addAttribute("produto", repository.getReferenceById(id));
-        return form(repository.getReferenceById(id), modelMap);
+        modelMap.addAttribute("produto", repository.findById(id).orElseThrow());
+        return form(repository.findById(id).orElseThrow(), modelMap);
     }
 
     @Override

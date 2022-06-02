@@ -48,8 +48,8 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
     @Override
     @GetMapping("/recover/{id}")
     public ModelAndView recover(@PathVariable("id") Long id, ModelMap modelMap) {
-        modelMap.addAttribute("clientePessoaFisica", repository.getReferenceById(id));
-        return form(repository.getReferenceById(id), modelMap);
+        modelMap.addAttribute("clientePessoaFisica", repository.findById(id).orElseThrow());
+        return form(repository.findById(id).orElseThrow(), modelMap);
     }
 
     @Override
