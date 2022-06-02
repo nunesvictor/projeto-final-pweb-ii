@@ -26,7 +26,7 @@ public class Produto {
     @Column(nullable = false)
     private String imagem;
 
-    @OneToMany(mappedBy = "produto")
+    @OneToMany(mappedBy = "produto", fetch = FetchType.EAGER)
     @OrderBy("updatedAt DESC")
     private List<Preco> precos;
 

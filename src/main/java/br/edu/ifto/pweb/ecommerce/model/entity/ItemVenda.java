@@ -1,7 +1,7 @@
 package br.edu.ifto.pweb.ecommerce.model.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -11,15 +11,16 @@ public class ItemVenda implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Produto produto;
 
     @ManyToOne
     private Venda venda;
 
+    @Column(nullable = false, columnDefinition = "integer default 1")
+    @Min(value = 1, message = "O valor mínimo para essa campo é {value}")
     @NotNull(message = "Esse campo é obrigatório")
-    @DecimalMin(value = "0.01", message = "O valor mínimo é {value}")
-    private Double quantidade;
+    private Integer quantidade = 1;
 
     public Long getId() {
         return id;
@@ -45,11 +46,11 @@ public class ItemVenda implements Serializable {
         this.venda = venda;
     }
 
-    public Double getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Double quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 
