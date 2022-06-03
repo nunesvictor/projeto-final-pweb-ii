@@ -1,9 +1,14 @@
 package br.edu.ifto.pweb.ecommerce.controller;
 
+import br.edu.ifto.pweb.ecommerce.model.entity.Cliente;
 import br.edu.ifto.pweb.ecommerce.model.entity.ClientePessoaFisica;
+import br.edu.ifto.pweb.ecommerce.model.entity.Endereco;
 import br.edu.ifto.pweb.ecommerce.model.repository.ClientePessoaFisicaRepository;
-import org.hibernate.cfg.NotYetImplementedException;
+import br.edu.ifto.pweb.ecommerce.model.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -11,26 +16,35 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @Transactional
 @RequestMapping("clientes")
 public class ClienteController implements ModelController<ClientePessoaFisica, Long> {
     private final ClientePessoaFisicaRepository repository;
+    private final EnderecoRepository enderecoRepository;
 
     @Autowired
-    public ClienteController(ClientePessoaFisicaRepository repository) {
+    public ClienteController(ClientePessoaFisicaRepository repository, EnderecoRepository enderecoRepository) {
         this.repository = repository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     @Override
     @GetMapping("/form")
     public ModelAndView form(ClientePessoaFisica clientePessoaFisica, ModelMap modelMap) {
         return new ModelAndView("/clientes/form", modelMap);
+    }
+
+    @GetMapping("/enderecos/form")
+    public ModelAndView formEndereco(Endereco endereco, ModelMap modelMap) {
+        return new ModelAndView("/clientes/enderecos/form", modelMap);
     }
 
     @Override
@@ -40,9 +54,28 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
         return new ModelAndView("/clientes/list", modelMap);
     }
 
+    @GetMapping("/enderecos/list")
+    public ModelAndView listEnderecos(ModelMap modelMap, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Cliente cliente = repository.findByUsername(userDetails.getUsername()).orElseThrow();
+        List<Endereco> enderecos = cliente.getEnderecos();
+
+        modelMap.addAttribute("enderecos", enderecos);
+        return new ModelAndView("/clientes/enderecos/list", modelMap);
+    }
+
     @Override
-    public ModelAndView create(ClientePessoaFisica model, BindingResult result) {
-        throw new NotYetImplementedException();
+    public ModelAndView create(ClientePessoaFisica clientePessoaFisica, BindingResult result) {
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
+
+    @PostMapping("/enderecos/create")
+    public ModelAndView createEndereco(Endereco endereco, BindingResult result) {
+        if (result.hasErrors()) {
+            return formEndereco(endereco, new ModelMap());
+        }
+
+        return new ModelAndView("redirect:/enderecos/list");
     }
 
     @Override
@@ -50,6 +83,12 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
     public ModelAndView recover(@PathVariable("id") Long id, ModelMap modelMap) {
         modelMap.addAttribute("clientePessoaFisica", repository.findById(id).orElseThrow());
         return form(repository.findById(id).orElseThrow(), modelMap);
+    }
+
+    @GetMapping("/enderecos/recover/{id}")
+    public ModelAndView recoverEndereco(@PathVariable("id") Long id, ModelMap modelMap) {
+        modelMap.addAttribute("endereco", enderecoRepository.findById(id).orElseThrow());
+        return formEndereco(enderecoRepository.findById(id).orElseThrow(), modelMap);
     }
 
     @Override
@@ -63,9 +102,23 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
         return new ModelAndView("redirect:/clientes/list");
     }
 
+    @PostMapping("/enderecos/update")
+    public ModelAndView update(Endereco endereco, BindingResult result) {
+        if (result.hasErrors()) {
+            return formEndereco(endereco, new ModelMap());
+        }
+
+        return new ModelAndView("redirect:/enderecos/list");
+    }
+
     @Override
     @GetMapping("/delete/{id}")
     public ModelAndView delete(@PathVariable("id") Long id) {
-        throw new NotYetImplementedException();
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
+
+    @GetMapping("/enderecos/delete/{id}")
+    public ModelAndView deleteEndereco(@PathVariable("id") Long id) {
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 }
