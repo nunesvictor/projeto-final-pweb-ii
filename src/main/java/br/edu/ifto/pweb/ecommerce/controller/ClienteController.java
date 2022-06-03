@@ -70,12 +70,16 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
     }
 
     @PostMapping("/enderecos/create")
-    public ModelAndView createEndereco(Endereco endereco, BindingResult result) {
+    public ModelAndView createEndereco(Endereco endereco, BindingResult result, Authentication authentication) {
         if (result.hasErrors()) {
             return formEndereco(endereco, new ModelMap());
         }
 
-        return new ModelAndView("redirect:/enderecos/list");
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Cliente cliente = repository.findByUsername(userDetails.getUsername()).orElseThrow();
+        cliente.getEnderecos().add(endereco);
+
+        return new ModelAndView("redirect:/clientes/enderecos/list");
     }
 
     @Override
@@ -108,7 +112,7 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
             return formEndereco(endereco, new ModelMap());
         }
 
-        return new ModelAndView("redirect:/enderecos/list");
+        return new ModelAndView("redirect:/clientes/enderecos/list");
     }
 
     @Override
