@@ -19,8 +19,6 @@
 
 <!-- MAIN -->
 <main class="container w-75 my-4">
-    <h3>Alterar dados cadastrais</h3>
-    <hr/>
     <form method="post"
           th:action="${clientePessoaFisica.id == null} ? @{/clientes/create} : @{/clientes/update}"
           th:object="${clientePessoaFisica}">
@@ -28,47 +26,61 @@
         <input type="hidden" id="id" name="id" th:field="*{id}"/>
         <input type="hidden" id="usuario" name="usuario" th:field="*{usuario}"/>
 
-        <div class="mb-3">
-            <label for="nomeInputText" class="form-label">Nome</label>
-            <input type="text" id="nomeInputText" class="form-control"
-                   th:field="*{nome}" th:classappend="${#fields.hasErrors('nome') ? 'is-invalid' : ''}"/>
-            <div class="invalid-feedback"
-                 th:errors="*{nome}"
-                 th:if="${#fields.hasErrors('nome')}"></div>
+        <h4>Informações pessoais</h4>
+        <hr/>
+
+        <div class="d-flex justify-content-between mb-3">
+            <div class="flex-grow-1 w-75 me-1">
+                <label for="nome" class="form-label">Nome</label>
+                <input id="nome"
+                       type="text"
+                       placeholder="Nome"
+                       th:field="*{nome}" class="form-control"
+                       th:classappend="${#fields.hasErrors('nome') ? 'is-invalid' : ''}"/>
+                <div class="invalid-feedback"
+                     th:errors="*{nome}"
+                     th:if="${#fields.hasErrors('nome')}"></div>
+            </div>
+
+            <div class="flex-grow-1 ms-1">
+                <label for="cpf" class="form-label">CPF</label>
+                <input id="cpf"
+                       type="text"
+                       placeholder="CPF"
+                       maxlength="11"
+                       th:field="*{cpf}" class="form-control"
+                       th:classappend="${#fields.hasErrors('cpf') ? 'is-invalid' : ''}"/>
+                <div class="invalid-feedback"
+                     th:errors="*{cpf}"
+                     th:if="${#fields.hasErrors('cpf')}"></div>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="cpfInputText" class="form-label">CPF</label>
-            <input type="text" id="cpfInputText" class="form-control" maxlength="11"
-                   th:field="*{cpf}" th:classappend="${#fields.hasErrors('cpf') ? 'is-invalid' : ''}"/>
-            <div class="invalid-feedback"
-                 th:errors="*{cpf}"
-                 th:if="${#fields.hasErrors('cpf')}"></div>
-        </div>
+        <div class="d-flex justify-content-between mb-3">
+            <div class="flex-grow-1 w-75 mw-1">
+                <label for="email" class="form-label">E-mail</label>
+                <input id="email"
+                       type="email"
+                       placeholder="E-mail"
+                       th:field="*{email}" class="form-control"
+                       th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"/>
+                <div class="invalid-feedback"
+                     th:errors="*{email}"
+                     th:if="${#fields.hasErrors('email')}"></div>
+            </div>
 
-        <div class="mb-3">
-            <label for="emailInput" class="form-label">E-mail</label>
-            <input type="email" class="form-control" id="emailInput"
-                   th:field="*{email}" th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"/>
-            <div class="invalid-feedback"
-                 th:errors="*{email}"
-                 th:if="${#fields.hasErrors('email')}"></div>
-        </div>
-
-        <div class="mb-3">
-            <label for="telefoneInputText" class="form-label">Telefone</label>
-            <input type="text" id="telefoneInputText" class="form-control" maxlength="11"
-                   th:field="*{telefone}" th:classappend="${#fields.hasErrors('telefone') ? 'is-invalid' : ''}"/>
-            <div class="invalid-feedback"
-                 th:errors="*{telefone}"
-                 th:if="${#fields.hasErrors('telefone')}"></div>
-        </div>
-
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="activeCheck" th:field="*{active}">
-            <label class="form-check-label" for="activeCheck">
-                Ativo
-            </label>
+            <div class="flex-grow-1 ms-1">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input id="telefone"
+                       type="text"
+                       placeholder="Telefone"
+                       maxlength="11"
+                       th:field="*{telefone}" class="form-control"
+                       th:classappend="${#fields.hasErrors('telefone') ? 'is-invalid' : ''}"/>
+                <div class="invalid-feedback"
+                     th:errors="*{telefone}"
+                     th:if="${#fields.hasErrors('telefone')}"></div>
+            </div>
         </div>
 
         <div class="d-flex flex-row-reverse">
