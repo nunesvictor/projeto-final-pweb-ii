@@ -11,8 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css"/>
-
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script src="https://kit.fontawesome.com/f01a87475e.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -21,10 +21,27 @@
 
 <!-- MAIN -->
 <main class="container my-4">
-    <h3>Meu carrinho</h3>
-    <hr/>
-
     <form id="cart-form" method="post" th:action="@{/carrinho/purchase}" th:object="${venda}">
+        <h5>Endereço de entrega</h5>
+        <hr>
+        <div class="d-flex justify-content-start mb-3">
+            <div class="card d-flex flex-row me-3 mb-3" style="width: 25%;" th:each="e : ${cliente.enderecos}">
+                <div class="mx-2 align-self-center">
+                    <input type="radio" required th:field="*{endereco}" th:value="${e.id}"/>
+                </div>
+                <div class="card-body align-self-center">
+                    <h5 class="card-title" th:text="${e.apelido}"></h5>
+                    <p class="card-text">
+                        <span th:text="|${e.logradouro}, ${e.numero}|"></span><br/>
+                        <span th:text="|${e.bairro}, ${e.localidade}-${e.uf}|"></span><br/>
+                        <span th:text="${e.cep}"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <h5>Itens</h5>
+        <hr/>
         <table class="table table-condensed table-striped table-hover">
             <thead>
             <tr>
@@ -37,12 +54,12 @@
             </thead>
             <tbody>
             <tr th:each="item,stat : ${venda.itens}">
-                <input type="hidden" th:field="*{itens[__${stat.index}__].produto}" />
+                <input type="hidden" th:field="*{itens[__${stat.index}__].produto}"/>
 
                 <td class="align-middle" th:text="${stat.count}"></td>
                 <td>
                     <input type="number" id="quantidadeInput" class="form-control product-count"
-                           th:field="*{itens[__${stat.index}__].quantidade}" value="1" />
+                           th:field="*{itens[__${stat.index}__].quantidade}" value="1"/>
                 </td>
                 <td class="align-middle" th:text="|${item.produto.descricao} ${item.produto.marca.nome}|"></td>
                 <td class="align-middle" th:text="${#numbers.formatCurrency(item.total())}"></td>
@@ -65,7 +82,12 @@
             </tbody>
         </table>
 
-        <button type="submit">ENVIAR</button>
+        <div class="d-flex flex-row-reverse">
+            <button class="btn btn-dark" type="submit" th:if="${#lists.size(venda.itens) > 0}">
+                <i class="fa-solid fa-basket-shopping me-1"></i>
+                FINALIZAR COMPRA
+            </button>
+        </div>
     </form>
 </main>
 
@@ -81,9 +103,9 @@
 <script th:src="@{/scripts/navlink-hover.js}"></script>
 <script>
     $(() => {
-       $('.product-count').each((_, el) => {
-           $(el).on('change', () => $('#cart-form').submit());
-       });
+        $('.product-count').each((_, el) => {
+            $(el).on('change', () => $('#cart-form').submit());
+        });
     });
 </script>
 </body>

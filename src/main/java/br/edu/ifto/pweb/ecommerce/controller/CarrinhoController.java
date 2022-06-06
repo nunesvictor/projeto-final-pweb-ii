@@ -1,18 +1,22 @@
 package br.edu.ifto.pweb.ecommerce.controller;
 
+import br.edu.ifto.pweb.ecommerce.model.entity.Cliente;
 import br.edu.ifto.pweb.ecommerce.model.entity.ItemVenda;
 import br.edu.ifto.pweb.ecommerce.model.entity.Produto;
 import br.edu.ifto.pweb.ecommerce.model.entity.Venda;
+import br.edu.ifto.pweb.ecommerce.model.repository.ClientePessoaFisicaRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.ProdutoRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.VendaRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -30,45 +35,64 @@ import java.util.Optional;
 @RequestMapping("carrinho")
 public class CarrinhoController {
     private final VendaRepository repository;
+    private final ClientePessoaFisicaRepository clientePessoaFisicaRepository;
     private final ProdutoRepository produtoRepository;
     private final Venda venda;
 
     @Autowired
     public CarrinhoController(VendaRepository repository,
-                              ProdutoRepository produtoRepository,
-                              Venda venda) {
+                              ClientePessoaFisicaRepository clientePessoaFisicaRepository,
+                              ProdutoRepository produtoRepository, Venda venda) {
         this.repository = repository;
+        this.clientePessoaFisicaRepository = clientePessoaFisicaRepository;
         this.produtoRepository = produtoRepository;
         this.venda = venda;
     }
 
     @GetMapping("/list")
-    public ModelAndView form(ModelMap modelMap) {
+    public ModelAndView list(ModelMap modelMap, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Cliente cliente = clientePessoaFisicaRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+
         modelMap.addAttribute("venda", venda);
+        modelMap.addAttribute("cliente", cliente);
+
         return new ModelAndView("/carrinho");
     }
 
     @GetMapping("/add/{id}")
     public ResponseEntity<?> addItem(@PathVariable("id") Long id) {
-        Optional<Produto> optionalProduto = produtoRepository.findById(id) ;
+        Optional<Produto> optionalProduto = produtoRepository.findById(id);
         Produto produto = optionalProduto.orElseThrow();
         ItemVenda item = new ItemVenda();
 
         item.setProduto(produto);
-        item.setVenda(venda);
         venda.getItens().add(item);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/purchase")
-    public ModelAndView purchase(@Valid Venda venda, BindingResult result) {
-        for (ItemVenda itemVenda : venda.getItens()) {
-            System.out.println(itemVenda);
+    public ModelAndView purchase(@Valid Venda venda, BindingResult result, Authentication authentication) {
+        if (result.hasErrors()) {
+            for (ObjectError error : result.getAllErrors()) {
+                System.out.println(error);
+            }
+
+            return new ModelAndView("redirect:/carrinho/list");
         }
 
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Cliente cliente = clientePessoaFisicaRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+
+        venda.setCliente(cliente);
+
+        for (ItemVenda itemVenda : venda.getItens()) {
+            itemVenda.setVenda(venda);
+        }
+
+        repository.save(venda);
         this.venda.getItens().clear();
-        this.venda.getItens().addAll(venda.getItens());
 
         return new ModelAndView("redirect:/carrinho/list");
     }

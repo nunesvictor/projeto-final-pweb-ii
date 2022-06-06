@@ -22,7 +22,9 @@ public class Venda implements Serializable {
 
     @ManyToOne
     private Cliente cliente;
-    private LocalDate data;
+
+    @ManyToOne
+    private Endereco endereco;
 
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
     private List<ItemVenda> itens = new ArrayList<>();
@@ -54,12 +56,12 @@ public class Venda implements Serializable {
         this.cliente = cliente;
     }
 
-    public LocalDate getData() {
-        return data;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     public List<ItemVenda> getItens() {
@@ -102,5 +104,18 @@ public class Venda implements Serializable {
         }
 
         return total;
+    }
+
+    @Override
+    public String toString() {
+        return "Venda{" +
+                "id=" + id +
+                ", cliente=" + cliente +
+                ", endereco=" + endereco +
+                ", itens=" + itens +
+                ", active=" + active +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

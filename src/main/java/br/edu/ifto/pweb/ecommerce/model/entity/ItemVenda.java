@@ -14,7 +14,7 @@ public class ItemVenda implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     private Produto produto;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Venda venda;
 
     @Column(nullable = false, columnDefinition = "integer default 1")
