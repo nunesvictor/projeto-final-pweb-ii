@@ -109,4 +109,8 @@ public class Endereco {
     public void setCep(String cep) {
         this.cep = cep;
     }
+
+    public String getFormattedCep() {
+        return cep.replaceAll("(\\d{5})(\\d{3})", "$1-$2");
+    }
 }

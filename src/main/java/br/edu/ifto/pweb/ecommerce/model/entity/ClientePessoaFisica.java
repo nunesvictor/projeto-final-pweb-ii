@@ -55,4 +55,8 @@ public class ClientePessoaFisica extends Cliente {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
+    public String getFormattedCpf() {
+        return cpf.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+    }
 }

@@ -18,3 +18,7 @@ main {
     color: var(--bs-white) !important;
     background: var(--bs-dark) !important;
 }
+
+.grayscale {
+    filter: grayscale(100%);
+}
