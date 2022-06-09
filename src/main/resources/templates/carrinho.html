@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>e-Commerce</title>
@@ -25,7 +23,7 @@
         <h5>Endereço de entrega</h5>
         <hr>
         <div class="d-flex justify-content-start mb-3">
-            <div class="card d-flex flex-row me-3 mb-3" style="width: 25%;" th:each="e : ${cliente.enderecos}">
+            <div class="card d-flex flex-row me-3 mb-3" style="width: 25%;" th:each="e,stat : ${cliente.enderecos}">
                 <div class="mx-2 align-self-center">
                     <input type="radio" required th:field="*{endereco}" th:value="${e.id}"/>
                 </div>
@@ -58,11 +56,17 @@
 
                 <td class="align-middle" th:text="${stat.count}"></td>
                 <td>
-                    <input type="number" id="quantidadeInput" class="form-control product-count"
-                           th:field="*{itens[__${stat.index}__].quantidade}" value="1"/>
+                    <input type="number" class="form-control product-count qtde-item" min="1" value="1"
+                           th:attr="data-index=${stat.index}"
+                           th:attrappend="data-valor=*{itens[__${stat.index}__].produto.precoAtual().valor}"
+                           th:field="*{itens[__${stat.index}__].quantidade}"
+                    />
                 </td>
                 <td class="align-middle" th:text="|${item.produto.descricao} ${item.produto.marca.nome}|"></td>
-                <td class="align-middle" th:text="${#numbers.formatCurrency(item.total())}"></td>
+                <td class="align-middle"
+                    th:text="${#numbers.formatCurrency(item.total())}"
+                    th:attr="id=|total-item-${stat.index}|"
+                ></td>
                 <td class="align-middle text-end">
                     <a class="btn btn-outline-danger btn-sm" title="Excluir"
                        th:href="@{/carrinho/delete/{id}(id=${item.produto.id})}">
@@ -77,7 +81,7 @@
             </tr>
             <tr>
                 <td colspan="4">Total</td>
-                <td id="#soma-produtos" th:text="${#numbers.formatCurrency(venda.total())}"></td>
+                <td id="total-compra" th:text="${#numbers.formatCurrency(venda.total())}"></td>
             </tr>
             </tbody>
         </table>
@@ -103,8 +107,32 @@
 <script th:src="@{/scripts/navlink-hover.js}"></script>
 <script>
     $(() => {
-        $('.product-count').each((_, el) => {
-            $(el).on('change', () => $('#cart-form').submit());
+        const getTotalItem = (el) => {
+            const valor = $(el).data("valor");
+            const quantidade = $(el).val();
+
+            return quantidade * valor;
+        }
+
+        const updateTotalCompra = () => {
+            let soma = 0;
+
+            $('.qtde-item').each((_, el) => soma += getTotalItem(el));
+            $('#total-compra').text(soma.toLocaleString("pt-BR", {style: "currency", currency: "BRL"}));
+        };
+
+        const updateTotalProduto = (el) => {
+            const index = $(el).data("index");
+
+            $(`#total-item-${index}`).text(getTotalItem(el).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            }));
+            updateTotalCompra();
+        };
+
+        $(".qtde-item").on('change', (e) => {
+            updateTotalProduto(e.target);
         });
     });
 </script>
