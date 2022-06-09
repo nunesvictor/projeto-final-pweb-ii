@@ -2,6 +2,7 @@ package br.edu.ifto.pweb.ecommerce.controller;
 
 import br.edu.ifto.pweb.ecommerce.model.entity.Categoria;
 import br.edu.ifto.pweb.ecommerce.model.repository.CategoriaRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -33,7 +34,9 @@ public class CategoriaController implements ModelController<Categoria, Long> {
     @Override
     @GetMapping("/list")
     public ModelAndView list(ModelMap modelMap) {
-        modelMap.addAttribute("categorias", repository.findAll());
+        modelMap.addAttribute("categorias", repository.findAll(
+                Sort.by(Sort.DEFAULT_DIRECTION, "descricao")));
+
         return new ModelAndView("/categorias/list", modelMap);
     }
 

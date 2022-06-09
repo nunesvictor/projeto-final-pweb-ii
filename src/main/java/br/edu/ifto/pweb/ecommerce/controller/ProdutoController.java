@@ -42,8 +42,11 @@ public class ProdutoController implements ModelController<Produto, Long> {
     @Override
     @GetMapping("/form")
     public ModelAndView form(Produto produto, ModelMap modelMap) {
-        modelMap.addAttribute("marcas", marcaRepository.findAll());
-        modelMap.addAttribute("categorias", categoriaRepository.findAll());
+        modelMap.addAttribute("marcas", marcaRepository.findAll(
+                Sort.by(Sort.DEFAULT_DIRECTION, "nome")));
+        modelMap.addAttribute("categorias", categoriaRepository.findAll(
+                Sort.by(Sort.DEFAULT_DIRECTION, "descricao")));
+
         return new ModelAndView("/produtos/form");
     }
 

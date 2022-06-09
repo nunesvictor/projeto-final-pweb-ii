@@ -2,6 +2,7 @@ package br.edu.ifto.pweb.ecommerce.controller;
 
 import br.edu.ifto.pweb.ecommerce.model.entity.Marca;
 import br.edu.ifto.pweb.ecommerce.model.repository.MarcaRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -32,7 +33,8 @@ public class MarcaController implements ModelController<Marca, Long> {
     @Override
     @GetMapping("/list")
     public ModelAndView list(ModelMap modelMap) {
-        modelMap.addAttribute("marcas", repository.findAll());
+        modelMap.addAttribute("marcas", repository.findAll(
+                Sort.by(Sort.DEFAULT_DIRECTION, "nome")));
         return new ModelAndView("/marcas/list", modelMap);
     }
 
