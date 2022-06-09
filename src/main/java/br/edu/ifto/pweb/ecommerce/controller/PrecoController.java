@@ -4,6 +4,7 @@ import br.edu.ifto.pweb.ecommerce.model.entity.Preco;
 import br.edu.ifto.pweb.ecommerce.model.repository.PrecoRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -31,7 +32,8 @@ public class PrecoController implements ModelController<Preco, Long> {
     @Override
     @GetMapping("/form")
     public ModelAndView form(Preco preco, ModelMap modelMap) {
-        modelMap.addAttribute("produtos", produtoRepository.findAll());
+        modelMap.addAttribute("produtos", produtoRepository.findAll(
+                Sort.by(Sort.DEFAULT_DIRECTION, "descricao")));
         return new ModelAndView("/precos/form", modelMap);
     }
 
