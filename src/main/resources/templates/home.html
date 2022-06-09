@@ -18,54 +18,99 @@
 <div th:replace="fragments/header.html :: header"></div>
 
 <!-- MAIN -->
-<main class="container my-4">
-    <div id="products-container" class="d-flex justify-content-start flex-wrap">
-        <div class="card mx-3 mb-3" style="width: 18rem;" th:each="p : ${produtos}">
-            <img th:src="@{/produtos/files/{filename}(filename=${p.imagem})}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title" th:text="|${p.descricao} ${p.marca.nome}|"></h5>
-                <div th:switch="${p.precoAtual()}">
-                    <div th:case="null">
-                        <p class="card-text">
-                        <h5 class="text-muted">Produto indisponível</h5>
-                        </p>
-                        <div class="d-grid gap-2">
-                            <a class="link-secondary text-decoration-none" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                     class="bi bi-envelope-exclamation" viewBox="0 0 16 16">
-                                    <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
-                                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1.5a.5.5 0 0 1-1 0V11a.5.5 0 0 1 1 0Zm0 3a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/>
-                                </svg>
-                                Avise-me quando chegar
-                            </a>
+<main>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"
+                           th:href="@{/}">Todos os produtos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/filters/promocoes}">Promoções</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriasNavDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="categoriasNavDropdown">
+                            <li th:each="c : ${categorias}">
+                                <a class="dropdown-item" th:text="${c.descricao}"
+                                   th:href="@{/filters/categoria/{id}(id=${c.id})}"></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="marcasNavDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Marcas
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="marcasNavDropdown">
+                            <li th:each="m : ${marcas}">
+                                <a class="dropdown-item" th:text="${m.nome}"
+                                   th:href="@{/filters/marca/{id}(id=${m.id})}"></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div id="products-container" class="d-flex justify-content-start flex-wrap">
+            <div class="card mx-3 mb-3" style="width: 18rem;" th:each="p : ${produtos}">
+                <img th:src="@{/produtos/files/{filename}(filename=${p.imagem})}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="|${p.descricao} ${p.marca.nome}|"></h5>
+                    <div th:switch="${p.precoAtual()}">
+                        <div th:case="null">
+                            <div class="card-text my-3">
+                                <h5 class="text-muted">Produto indisponível</h5>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a class="link-secondary text-decoration-none" href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-envelope-exclamation" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
+                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1.5a.5.5 0 0 1-1 0V11a.5.5 0 0 1 1 0Zm0 3a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/>
+                                    </svg>
+                                    Avise-me quando chegar
+                                </a>
+                            </div>
+                        </div>
+                        <div th:case="*">
+                            <div class="card-text my-3">
+                                <small class="text-muted text-decoration-line-through me-2"
+                                       th:if="${p.precoAnterior != null and p.percentualDesconto > 0}">
+                                    <em th:text="${#numbers.formatCurrency(p.precoAnterior.valor)}"></em>
+                                </small>
+
+                                <span class="me-1" th:classappend="${p.percentualDesconto > 0 ? 'fw-bold' : ''}"
+                                      th:text="${#numbers.formatCurrency(p.precoAtual.valor)}"></span>
+
+                                <span class="badge text-bg-success"
+                                      th:if="${p.percentualDesconto > 0}">
+                                    <em th:text="|${#numbers.formatDecimal(p.percentualDesconto, 1, 0)}% OFF|"></em></span>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-lg btn-outline-dark add-cart"
+                                        th:attr="data-add-url=@{/carrinho/add/{id}(id=${p.id})}"
+                                        th:attrappend="data-check-url=@{/carrinho/check/{id}(id=${p.id})}">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Adicionar ao carrinho</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div th:case="*">
-                        <p class="card-text">
-                            <small class="text-muted text-decoration-line-through me-2"
-                                   th:if="${p.precoAnterior() != null and p.percentualDesconto() > 0}">
-                                <em th:text="${#numbers.formatCurrency(p.precoAnterior().valor)}"></em>
-                            </small>
 
-                            <span class="me-1" th:classappend="${p.percentualDesconto() > 0 ? 'fw-bold' : ''}"
-                                  th:text="${#numbers.formatCurrency(p.precoAtual().valor)}"></span>
-
-                            <span class="badge text-bg-success"
-                                  th:if="${p.percentualDesconto() > 0}">
-                                <em th:text="|${#numbers.formatDecimal(p.percentualDesconto(), 1, 0)}% OFF|"></em>
-                            </span>
-                        </p>
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-lg btn-outline-dark add-cart"
-                                    th:attr="data-add-url=@{/carrinho/add/{id}(id=${p.id})}"
-                                    th:attrappend="data-check-url=@{/carrinho/check/{id}(id=${p.id})}">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                <span>Adicionar ao carrinho</span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
-
             </div>
         </div>
     </div>
