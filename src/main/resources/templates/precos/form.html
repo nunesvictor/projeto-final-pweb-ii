@@ -26,7 +26,7 @@
 
         <div class="mb-3">
             <label for="produtoSelect" class="form-label">Produto</label>
-            <select class="form-control" th:field="*{produto}" id="produtoSelect">
+            <select class="form-control" th:field="*{produto}" id="produtoSelect" autofocus>
                 <option th:each="p : ${produtos}" th:value="${p.id}" th:text="|${p.descricao} ${p.marca.nome}|"></option>
             </select>
         </div>
