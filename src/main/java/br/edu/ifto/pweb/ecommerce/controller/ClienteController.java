@@ -61,7 +61,8 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
         if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             modelMap.addAttribute("clientes", repository.findAll(
                     Sort.by(Sort.DEFAULT_DIRECTION, "nome")));
-        } else modelMap.addAttribute("clientes", repository.findAllByUsername(userDetails.getUsername()));
+        } else modelMap.addAttribute("clientes", repository.findAllByUsuarioUsername(
+                userDetails.getUsername()));
 
         return new ModelAndView("/clientes/list", modelMap);
     }
@@ -69,7 +70,7 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
     @GetMapping("/enderecos/list")
     public ModelAndView listEnderecos(ModelMap modelMap, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Cliente cliente = repository.findByUsername(userDetails.getUsername()).orElseThrow();
+        Cliente cliente = repository.findByUsuarioUsername(userDetails.getUsername()).orElseThrow();
         List<Endereco> enderecos = cliente.getEnderecos();
 
         modelMap.addAttribute("enderecos", enderecos);
@@ -88,7 +89,7 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
         }
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Cliente cliente = repository.findByUsername(userDetails.getUsername()).orElseThrow();
+        Cliente cliente = repository.findByUsuarioUsername(userDetails.getUsername()).orElseThrow();
         cliente.getEnderecos().add(endereco);
 
         return new ModelAndView("redirect:/clientes/enderecos/list");

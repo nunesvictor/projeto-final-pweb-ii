@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Controller
 @Transactional
@@ -47,12 +49,7 @@ public class PrecoController implements ModelController<Preco, Long> {
     @Override
     @PostMapping("/create")
     public ModelAndView create(Preco preco, BindingResult result) {
-        if (result.hasErrors()) {
-            return form(preco, new ModelMap());
-        }
-
-        repository.save(preco);
-        return new ModelAndView("redirect:/precos/list");
+        return save(preco, result);
     }
 
     @Override
@@ -65,6 +62,18 @@ public class PrecoController implements ModelController<Preco, Long> {
     @Override
     @PostMapping("/update")
     public ModelAndView update(Preco preco, BindingResult result) {
+        return save(preco, result);
+    }
+
+    private ModelAndView save(Preco preco, BindingResult result) {
+        Optional<Preco> precoAnterior = repository.findFirstByActiveTrueAndProdutoOrderByUpdatedAtDesc(
+                preco.getProduto());
+
+        if (preco.isPromocao() && precoAnterior.isPresent() && preco.getValor() >= precoAnterior.get().getValor()) {
+            result.rejectValue("valor", "error.valor",
+                    "O preço informado como promocional deve ser menor que o preço anterior");
+        }
+
         if (result.hasErrors()) {
             return form(preco, new ModelMap());
         }

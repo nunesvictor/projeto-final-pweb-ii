@@ -5,6 +5,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +17,8 @@ public class Preco {
     @ManyToOne
     private Produto produto;
 
+    @NotNull(message = "Esse campo é obrigatório")
+    @Column(nullable = false, columnDefinition = "decimal(10,2) default 0")
     @DecimalMin(value = "0.01", message = "O valor mínimo é {value}")
     private Double valor;
 

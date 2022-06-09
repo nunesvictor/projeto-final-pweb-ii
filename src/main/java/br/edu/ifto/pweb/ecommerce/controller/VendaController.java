@@ -45,7 +45,8 @@ public class VendaController {
     @GetMapping("/detail/{id}")
     public ModelAndView detail(@PathVariable("id") Long id, ModelMap modelMap, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Cliente cliente = clientePessoaFisicaRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        Cliente cliente = clientePessoaFisicaRepository.findByUsuarioUsername(
+                userDetails.getUsername()).orElseThrow();
         Venda venda = repository.findById(id).orElseThrow();
 
         if (!venda.getCliente().getId().equals(cliente.getId())) {
@@ -60,9 +61,10 @@ public class VendaController {
     @GetMapping("/list")
     public ModelAndView list(ModelMap modelMap, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Cliente cliente = clientePessoaFisicaRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        Cliente cliente = clientePessoaFisicaRepository.findByUsuarioUsername(
+                userDetails.getUsername()).orElseThrow();
 
-        modelMap.addAttribute("vendas", repository.findByCliente(cliente));
+        modelMap.addAttribute("vendas", repository.findAllByCliente(cliente));
         return new ModelAndView("/vendas/list", modelMap);
     }
 

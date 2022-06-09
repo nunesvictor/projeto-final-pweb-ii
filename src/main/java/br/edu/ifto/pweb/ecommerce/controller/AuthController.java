@@ -45,7 +45,7 @@ public class AuthController {
             return signOnStep1Form(clientePessoaFisica);
         }
 
-        clientePessoaFisica.getUsuario().setRoles(roleRepository.findByAuthority("ROLE_USER"));
+        clientePessoaFisica.getUsuario().setRoles(roleRepository.findAllByAuthority("ROLE_USER"));
         clientePessoaFisica.getUsuario().setPassword(
                 new BCryptPasswordEncoder().encode(
                         clientePessoaFisica.getUsuario().getPassword())

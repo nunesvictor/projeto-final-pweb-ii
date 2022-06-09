@@ -49,7 +49,7 @@ public class CarrinhoController {
     @GetMapping("/list")
     public ModelAndView list(ModelMap modelMap, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        ClientePessoaFisica cliente = clientePessoaFisicaRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        ClientePessoaFisica cliente = clientePessoaFisicaRepository.findByUsuarioUsername(userDetails.getUsername()).orElseThrow();
 
         venda.setEndereco(cliente.getEnderecos().get(0));
         modelMap.addAttribute("venda", venda);
@@ -81,7 +81,7 @@ public class CarrinhoController {
         }
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Cliente cliente = clientePessoaFisicaRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        Cliente cliente = clientePessoaFisicaRepository.findByUsuarioUsername(userDetails.getUsername()).orElseThrow();
 
         venda.setCliente(cliente);
 
