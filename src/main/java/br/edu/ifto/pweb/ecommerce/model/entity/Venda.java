@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,9 @@ public class Venda implements Serializable {
 
     @ManyToOne
     private Endereco endereco;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Pagamento pagamento;
 
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
     private List<ItemVenda> itens = new ArrayList<>();
@@ -72,6 +74,14 @@ public class Venda implements Serializable {
         this.itens = itens;
     }
 
+    public Pagamento getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
+    }
+
     public Boolean getActive() {
         return active;
     }
@@ -104,18 +114,5 @@ public class Venda implements Serializable {
         }
 
         return total;
-    }
-
-    @Override
-    public String toString() {
-        return "Venda{" +
-                "id=" + id +
-                ", cliente=" + cliente +
-                ", endereco=" + endereco +
-                ", itens=" + itens +
-                ", active=" + active +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

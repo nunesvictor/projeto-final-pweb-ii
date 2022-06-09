@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>e-Commerce</title>
@@ -21,7 +19,15 @@
 
 <!-- MAIN -->
 <main class="container w-50 my-4">
-    <form method="post">
+    <form method="post" th:action="@{/vendas/pagamento/processar}" th:object="${pagamento}">
+        <input type="hidden" id="id" name="id" th:field="*{id}"/>
+        <input type="hidden" th:field="*{venda}"/>
+        <input type="hidden" th:field="*{formaPagamento}"/>
+        <input type="hidden" th:field="*{descontoTotal}"/>
+        <input type="hidden" th:field="*{jurosTotal}"/>
+        <input type="hidden" id="valor-total" th:field="*{valorTotal}"/>
+        <input type="hidden" id="valor-parcela" th:field="*{valorParcela}"/>
+
         <h4>Dados do cartão</h4>
         <hr/>
 
@@ -74,9 +80,9 @@
         <div class="d-flex justify-content-between mb-3">
             <div class="flex-grow-1 w-75 me-1">
                 <label for="parcelas" class="form-label">Parcelas</label>
-                <select class="form-control" id="parcelas">
-                    <option th:each="i : ${#numbers.sequence(1, 6)}"
-                            th:text="|${i}x de ${#numbers.formatCurrency(venda.total() / i)} sem juros|"
+                <select class="form-control" id="parcelas" th:field="*{numeroParcelas}">
+                    <option th:each="i : *{#numbers.sequence(1, formaPagamento.parcelamentoMaximo)}"
+                            th:text="|${i}x de ${#numbers.formatCurrency(pagamento.valorTotal / i)} ${pagamento.jurosTotal > 0 ? 'com' : 'sem'} juros|"
                             th:value="${i}"
                     ></option>
                 </select>
@@ -103,6 +109,10 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script th:src="@{/scripts/navlink-hover.js}"></script>
 <script>
+    $('#parcelas').on('change', (e) => {
+        $('#valor-parcela').val($('#valor-total').val() / $(e.target).val());
+    });
+
     new Cleave('#numero', {
         creditCard: true,
         onCreditCardTypeChanged: function (type) {

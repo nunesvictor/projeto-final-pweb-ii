@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>e-Commerce</title>
@@ -22,42 +20,15 @@
 <!-- MAIN -->
 <main class="container my-4">
     <div class="d-flex justify-content-around">
-        <div class="card" style="width: 18rem;">
-            <img height="150px" src="/images/pix.svg" class="card-img-top p-4" alt="..."/>
-            <div class="card-body">
-                <h5 class="card-title text-center">Pix</h5>
-                <br/>
-                <div class="d-grid gap-2">
-                    <a class="btn btn-outline-dark"
-                       th:href="@{/vendas/pagamento/{id}/pix(id=${venda.id})}">
-                        PAGAR
-                    </a>
-                </div>
-            </div>
-        </div>
 
-        <div class="card" style="width: 18rem;">
-            <img height="150px" src="/images/barcode.svg" class="card-img-top" alt="..."/>
+        <div class="card" style="width: 18rem;" th:each="f : ${formasPagamento}">
+            <img height="150px" th:src="${f.imagem}" class="card-img-top p-4" alt="..."/>
             <div class="card-body">
-                <h5 class="card-title text-center">Boleto Bancário</h5>
+                <h5 class="card-title text-center" th:text="${f.descricao}"></h5>
                 <br/>
                 <div class="d-grid gap-2">
                     <a class="btn btn-outline-dark"
-                       th:href="@{/vendas/pagamento/{id}/boleto(id=${venda.id})}">
-                        PAGAR
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="width: 18rem;">
-            <img height="150px" src="/images/credit-card.svg" class="card-img-top" alt="..."/>
-            <div class="card-body">
-                <h5 class="card-title text-center">Cartão de Crédito</h5>
-                <br/>
-                <div class="d-grid gap-2">
-                    <a class="btn btn-outline-dark"
-                       th:href="@{/vendas/pagamento/{id}/cartao-credito(id=${venda.id})}">
+                       th:href="@{/vendas/pagamento/{id}/{slug}(id=${venda.id},slug=${f.slug})}">
                         PAGAR
                     </a>
                 </div>

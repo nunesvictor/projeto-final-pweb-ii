@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>e-Commerce</title>
@@ -21,14 +19,30 @@
 
 <!-- MAIN -->
 <main class="container my-4">
-    <div class="d-flex justify-content-center">
-        <div class="card" style="width: 18rem;">
-            <div id="qrcode" class="my-3 mx-auto"></div>
-            <div class="card-body">
-                <p class="card-text">Leia o QR Code com o aplicativo do seu banco para efetuar o pagamento.</p>
+    <form method="post" th:action="@{/vendas/pagamento/processar}" th:object="${pagamento}">
+        <input type="hidden" id="id" name="id" th:field="*{id}"/>
+        <input type="hidden" th:field="*{venda}"/>
+        <input type="hidden" th:field="*{formaPagamento}"/>
+        <input type="hidden" th:field="*{descontoTotal}"/>
+        <input type="hidden" th:field="*{jurosTotal}"/>
+        <input type="hidden" th:field="*{numeroParcelas}"/>
+        <input type="hidden" th:field="*{valorTotal}"/>
+        <input type="hidden" th:field="*{valorParcela}"/>
+
+        <div class="d-flex justify-content-center">
+            <div class="card" style="width: 18rem;">
+                <div id="qrcode" class="my-3 mx-auto"></div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Leia o QR Code com o aplicativo do seu banco para efetuar o pagamento.
+                    </p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-dark" type="submit">CONFIRMAR PAGAMENTO</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </main>
 
 <!-- FOOTER -->

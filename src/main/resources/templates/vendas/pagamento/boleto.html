@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>e-Commerce</title>
@@ -24,19 +22,57 @@
     <h4>Pagamento via Boleto Bancário</h4>
     <hr/>
 
-    <div class="alert alert-success" role="alert">
-        O seu boleto foi gerado.
-        <a id="link-boleto" th:href="@{/vendas/pagamento/{id}/boleto/gerar(id=${venda.id})}"
-           class="alert-link" target="_blank">Clique aqui</a>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-             class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
-            <path fill-rule="evenodd"
-                  d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
-        </svg>
-        para fazer o download.
-    </div>
+    <form method="post" th:action="@{/vendas/pagamento/processar}" th:object="${pagamento}">
+        <input type="hidden" id="id" name="id" th:field="*{id}"/>
+        <input type="hidden" th:field="*{venda}"/>
+        <input type="hidden" th:field="*{formaPagamento}"/>
+        <input type="hidden" th:field="*{descontoTotal}"/>
+        <input type="hidden" th:field="*{jurosTotal}"/>
+        <input type="hidden" th:field="*{numeroParcelas}"/>
+        <input type="hidden" th:field="*{valorTotal}"/>
+        <input type="hidden" th:field="*{valorParcela}"/>
+        <input type="hidden" th:name="nextUrl" th:value="@{/vendas/pagamento/{id}/boleto/gerar(id=*{venda.id})}"/>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="card-text">
+                    <dd>
+                        <div class="d-flex justify-content-between">
+                            <span>Valor da compra</span>
+                            <span th:text="*{#numbers.formatCurrency(venda.total)}"></span>
+                        </div>
+                    </dd>
+                    <dd>
+                        <div class="d-flex justify-content-between">
+                            <span>Descontos</span>
+                            <span th:text="|- ${#numbers.formatCurrency(pagamento.descontoTotal)}|"></span>
+                        </div>
+                    </dd>
+                    <dd>
+                        <div class="d-flex justify-content-between">
+                            <span>Juros Total</span>
+                            <span th:text="|+ ${#numbers.formatCurrency(pagamento.jurosTotal)}|"></span>
+                        </div>
+                    </dd>
+                    <dd>
+                        <div class="d-flex justify-content-end">
+                            <span th:text="|= ${#numbers.formatCurrency(pagamento.valorTotal)}|"></span>
+                        </div>
+                    </dd>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-dark" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upc"
+                     viewBox="0 0 16 16">
+                    <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                </svg>
+                GERAR BOLETO
+            </button>
+        </div>
+    </form>
 </main>
 
 <!-- FOOTER -->

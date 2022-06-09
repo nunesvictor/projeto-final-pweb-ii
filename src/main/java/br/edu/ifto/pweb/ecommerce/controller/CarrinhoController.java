@@ -1,9 +1,6 @@
 package br.edu.ifto.pweb.ecommerce.controller;
 
-import br.edu.ifto.pweb.ecommerce.model.entity.Cliente;
-import br.edu.ifto.pweb.ecommerce.model.entity.ItemVenda;
-import br.edu.ifto.pweb.ecommerce.model.entity.Produto;
-import br.edu.ifto.pweb.ecommerce.model.entity.Venda;
+import br.edu.ifto.pweb.ecommerce.model.entity.*;
 import br.edu.ifto.pweb.ecommerce.model.repository.ClientePessoaFisicaRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.ProdutoRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.VendaRepository;
@@ -25,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
+import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -52,8 +49,9 @@ public class CarrinhoController {
     @GetMapping("/list")
     public ModelAndView list(ModelMap modelMap, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Cliente cliente = clientePessoaFisicaRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        ClientePessoaFisica cliente = clientePessoaFisicaRepository.findByUsername(userDetails.getUsername()).orElseThrow();
 
+        venda.setEndereco(cliente.getEnderecos().get(0));
         modelMap.addAttribute("venda", venda);
         modelMap.addAttribute("cliente", cliente);
 
@@ -94,7 +92,8 @@ public class CarrinhoController {
         repository.save(venda);
         this.venda.getItens().clear();
 
-        return new ModelAndView("redirect:/carrinho/list");
+        return new ModelAndView(MessageFormat.format(
+                "redirect:/vendas/pagamento/{0}/selecionar", venda.getId()));
     }
 
     @GetMapping("/delete/{id}")
