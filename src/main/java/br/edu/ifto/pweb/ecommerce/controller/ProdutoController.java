@@ -7,6 +7,7 @@ import br.edu.ifto.pweb.ecommerce.model.repository.ProdutoRepository;
 import br.edu.ifto.pweb.ecommerce.storage.StorageService;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,6 @@ public class ProdutoController implements ModelController<Produto, Long> {
     private final MarcaRepository marcaRepository;
     private final CategoriaRepository categoriaRepository;
     private final StorageService storageService;
-
 
     public ProdutoController(ProdutoRepository repository,
                              MarcaRepository marcaRepository,
@@ -50,7 +50,8 @@ public class ProdutoController implements ModelController<Produto, Long> {
     @Override
     @GetMapping("/list")
     public ModelAndView list(ModelMap modelMap) {
-        modelMap.addAttribute("produtos", repository.findAll());
+        modelMap.addAttribute("produtos", repository.findAll(
+                Sort.by(Sort.DEFAULT_DIRECTION, "descricao")));
         return new ModelAndView("/produtos/list", modelMap);
     }
 
