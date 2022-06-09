@@ -9,5 +9,8 @@ import java.util.Optional;
 
 public interface ClientePessoaFisicaRepository extends JpaRepository<ClientePessoaFisica, Long> {
     @Query("FROM ClientePessoaFisica WHERE usuario.username = :username")
+    List<ClientePessoaFisica> findAllByUsername(String username);
+
+    @Query("FROM ClientePessoaFisica WHERE usuario.username = :username")
     Optional<ClientePessoaFisica> findByUsername(String username);
 }
