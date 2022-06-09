@@ -5,6 +5,7 @@ import br.edu.ifto.pweb.ecommerce.model.entity.ClientePessoaFisica;
 import br.edu.ifto.pweb.ecommerce.model.entity.Endereco;
 import br.edu.ifto.pweb.ecommerce.model.repository.ClientePessoaFisicaRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.EnderecoRepository;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -48,9 +49,20 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
     }
 
     @Override
-    @GetMapping("/list")
     public ModelAndView list(ModelMap modelMap) {
-        modelMap.addAttribute("clientes", repository.findAll());
+        throw new NotYetImplementedException();
+    }
+
+    @GetMapping("/list")
+    public ModelAndView list(ModelMap modelMap, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            modelMap.addAttribute("clientes", repository.findAll());
+        } else {
+            modelMap.addAttribute("clientes", repository.findAllByUsername(userDetails.getUsername()));
+        }
+
         return new ModelAndView("/clientes/list", modelMap);
     }
 
