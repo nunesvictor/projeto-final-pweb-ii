@@ -57,14 +57,4 @@ public class ItemVenda implements Serializable {
     public Double total() {
         return quantidade * produto.precoAtual().getValor();
     }
-
-    @Override
-    public String toString() {
-        return "ItemVenda{" +
-                "id=" + id +
-                ", produto=" + produto +
-                ", venda=" + venda +
-                ", quantidade=" + quantidade +
-                '}';
-    }
 }
