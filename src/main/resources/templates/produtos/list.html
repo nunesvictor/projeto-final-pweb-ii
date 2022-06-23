@@ -24,6 +24,19 @@
     <div th:replace="~{fragments/nav-pills :: product-nav-pills}"></div>
     <hr/>
 
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+            <label for="categorias">Filtrar por categoria</label>
+            <select id="categorias" class="form-control">
+                <option value="">Todas</option>
+                <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.descricao}"
+                        th:attr="selected=${c.id == categoriaId ? 'selected' : 'false'}"></option>
+            </select>
+        </div>
+    </div>
+    <hr/>
+
     <table class="table table-condensed table-striped table-hover">
         <thead>
         <tr>
@@ -95,5 +108,17 @@
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
 <script th:src="@{/scripts/navlink-hover.js}"></script>
+<script>
+    $('#categorias').on('change', (e) => {
+        const select = $(e.target);
+
+        if (select.val() !== '') {
+            location.href = `/produtos/filter/categoria/${select.val()}`;
+            return;
+        }
+
+        location.href = `/produtos/list`;
+    });
+</script>
 </body>
 </html>

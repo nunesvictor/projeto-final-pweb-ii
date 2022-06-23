@@ -55,6 +55,17 @@ public class ProdutoController implements ModelController<Produto, Long> {
     public ModelAndView list(ModelMap modelMap) {
         modelMap.addAttribute("produtos", repository.findAll(
                 Sort.by(Sort.DEFAULT_DIRECTION, "descricao")));
+        modelMap.addAttribute("categorias", categoriaRepository.findAll());
+
+        return new ModelAndView("/produtos/list", modelMap);
+    }
+
+    @GetMapping("/filter/categoria/{id}")
+    public ModelAndView filterByCategoria(@PathVariable String id, ModelMap modelMap) {
+        modelMap.addAttribute("categoriaId", Long.valueOf(id));
+        modelMap.addAttribute("categorias", categoriaRepository.findAll());
+        modelMap.addAttribute("produtos", repository.findAllByCategorias_Id(Long.valueOf(id)));
+
         return new ModelAndView("/produtos/list", modelMap);
     }
 

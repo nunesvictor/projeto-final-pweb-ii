@@ -1,7 +1,5 @@
 package br.edu.ifto.pweb.ecommerce.model.repository;
 
-import br.edu.ifto.pweb.ecommerce.model.entity.Categoria;
-import br.edu.ifto.pweb.ecommerce.model.entity.Marca;
 import br.edu.ifto.pweb.ecommerce.model.entity.Produto;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +16,6 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     List<Produto> findAllByActiveTrueAndMarcaId(Long marca_id, Sort sort);
 
     List<Produto> findAllByActiveTrueAndPrecos_PromocaoTrue(Sort sort);
+
+    List<Produto> findAllByCategorias_Id(Long categorias_id);
 }
