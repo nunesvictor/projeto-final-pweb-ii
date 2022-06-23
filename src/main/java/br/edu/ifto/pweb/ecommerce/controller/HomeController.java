@@ -1,10 +1,8 @@
 package br.edu.ifto.pweb.ecommerce.controller;
 
-import br.edu.ifto.pweb.ecommerce.model.entity.Produto;
 import br.edu.ifto.pweb.ecommerce.model.repository.CategoriaRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.MarcaRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.ProdutoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Controller
 @Transactional
@@ -24,7 +21,6 @@ public class HomeController {
     private final MarcaRepository marcaRepository;
     private final CategoriaRepository categoriaRepository;
 
-    @Autowired
     public HomeController(ProdutoRepository repository,
                           MarcaRepository marcaRepository, CategoriaRepository categoriaRepository) {
         this.repository = repository;

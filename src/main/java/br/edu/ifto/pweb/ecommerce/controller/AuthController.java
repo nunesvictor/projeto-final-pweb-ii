@@ -3,7 +3,6 @@ package br.edu.ifto.pweb.ecommerce.controller;
 import br.edu.ifto.pweb.ecommerce.model.entity.ClientePessoaFisica;
 import br.edu.ifto.pweb.ecommerce.model.repository.ClientePessoaFisicaRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,7 +21,6 @@ public class AuthController {
     private final ClientePessoaFisicaRepository clientePessoaFisicaRepository;
     private final RoleRepository roleRepository;
 
-    @Autowired
     public AuthController(ClientePessoaFisicaRepository clientePessoaFisicaRepository,
                           RoleRepository roleRepository) {
         this.clientePessoaFisicaRepository = clientePessoaFisicaRepository;

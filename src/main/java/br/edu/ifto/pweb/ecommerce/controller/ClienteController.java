@@ -6,7 +6,6 @@ import br.edu.ifto.pweb.ecommerce.model.entity.Endereco;
 import br.edu.ifto.pweb.ecommerce.model.repository.ClientePessoaFisicaRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.EnderecoRepository;
 import org.hibernate.cfg.NotYetImplementedException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -32,7 +31,6 @@ public class ClienteController implements ModelController<ClientePessoaFisica, L
     private final ClientePessoaFisicaRepository repository;
     private final EnderecoRepository enderecoRepository;
 
-    @Autowired
     public ClienteController(ClientePessoaFisicaRepository repository, EnderecoRepository enderecoRepository) {
         this.repository = repository;
         this.enderecoRepository = enderecoRepository;

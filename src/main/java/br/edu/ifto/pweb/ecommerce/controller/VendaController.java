@@ -6,7 +6,6 @@ import br.edu.ifto.pweb.ecommerce.model.repository.FormaPagamentoRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.VendaRepository;
 import br.edu.ifto.pweb.ecommerce.utils.BoletoUtil;
 import br.edu.ifto.pweb.ecommerce.utils.PercentUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,6 @@ public class VendaController {
     private final FormaPagamentoRepository formaPagamentoRepository;
     private final ClientePessoaFisicaRepository clientePessoaFisicaRepository;
 
-    @Autowired
     public VendaController(VendaRepository repository,
                            FormaPagamentoRepository formaPagamentoRepository,
                            ClientePessoaFisicaRepository clientePessoaFisicaRepository) {

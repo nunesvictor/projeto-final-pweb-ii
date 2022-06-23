@@ -4,7 +4,6 @@ import br.edu.ifto.pweb.ecommerce.model.entity.*;
 import br.edu.ifto.pweb.ecommerce.model.repository.ClientePessoaFisicaRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.ProdutoRepository;
 import br.edu.ifto.pweb.ecommerce.model.repository.VendaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,6 @@ public class CarrinhoController {
     private final ProdutoRepository produtoRepository;
     private final Venda venda;
 
-    @Autowired
     public CarrinhoController(VendaRepository repository,
                               ClientePessoaFisicaRepository clientePessoaFisicaRepository,
                               ProdutoRepository produtoRepository, Venda venda) {
